@@ -16,7 +16,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:gravity="right|center_vertical"
+        android:gravity="end|center_vertical"
         app:layout_constraintTop_toTopOf="parent">
         <TextView
             android:layout_width="wrap_content"
@@ -31,7 +31,6 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Borderless"
             android:text="@string/change"
             android:onClick="changeRadius"/>
     </LinearLayout>

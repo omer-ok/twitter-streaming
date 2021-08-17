@@ -17,6 +17,7 @@ import android.view.MenuInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
@@ -308,15 +309,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                radius = input.text.toString().toLong().toDouble()
-                radiusTV!!.text = " $radius KM"
-                tweetsViewModel?.stopStreaming()
-                listLiveData = tweetsViewModel?.startStreaming(
-                    getApplicationContext(),
-                    lastKnownLocation!!,
-                    searchTerm,
-                    radius
-                )
+                if(input.text.trim().toString()!=""){
+                    radius = input.text.trim().toString().toLong().toDouble()
+                    radiusTV!!.text = " $radius KM"
+                    tweetsViewModel?.stopStreaming()
+                    listLiveData = tweetsViewModel?.startStreaming(
+                        getApplicationContext(),
+                        lastKnownLocation!!,
+                        searchTerm,
+                        radius
+                    )
+                }else{
+                    Toast.makeText(this, "Please Select a radius ", Toast.LENGTH_SHORT).show()
+                }
             }
         }
         builder.setNegativeButton(
