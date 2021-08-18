@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Tweets around you</string>
-    <string name="twitter_api_key" translatable="false">YOUR_TWITTER_API_KEY</string>
-    <string name="twitter_api_secret" translatable="false">YOUR_TWITTER_API_SECRET</string>
-    <string name="twitter_access_token" translatable="false">YOUR_TWITTER_ACCESS_TOKEN</string>
-    <string name="twitter_access_token_secret" translatable="false">YOUR_TWITTER_ACCESS_TOKEN_SECRET</string>
+    <string name="twitter_api_key" translatable="false">4vBVtAPxougen7ZaBsNXkJG46</string>
+    <string name="twitter_api_secret" translatable="false">dr9cQCgSJLycDmreEYJp6yvNO6LZ7mStvId48YGn0TAhJ6zY6o</string>
+    <string name="twitter_access_token" translatable="false">84014605-TtPmZInLMsaNhAf21qNrYZGqhBfpHaOCv5kB3aa8o</string>
+    <string name="twitter_access_token_secret" translatable="false">UQqoyBQdvnchqosrEKKRA6eB8VzupRQPxumjA6bKtNFah</string>
     <string name="message_need_location_permission">App need to access your location to show Tweets around you!</string>
     <string name="tap_to_view_tweet">Tap to view Tweet</string>
     <string name="search_title">Search</string>
