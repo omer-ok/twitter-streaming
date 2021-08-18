@@ -81,12 +81,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         }
         lastKnownLocation = locationManager!!.getLastKnownLocation(locationProvider)
         tweetsViewModel = ViewModelProviders.of(this).get(TweetsViewModel::class.java)
-        listLiveData = tweetsViewModel!!.startStreaming(
-            this@MainActivity,
-            lastKnownLocation!!,
-            searchTerm,
-            radius
-        )
+        if(lastKnownLocation!=null){
+            listLiveData = tweetsViewModel!!.startStreaming(
+                this@MainActivity,
+                lastKnownLocation!!,
+                searchTerm,
+                radius
+            )
+        }
         startObserving()
     }
 
@@ -118,12 +120,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
                     tweetsViewModel?.stopStreaming()
-                    listLiveData = tweetsViewModel!!.startStreaming(
-                        getApplicationContext(),
-                        lastKnownLocation!!,
-                        searchTerm,
-                        radius
-                    )
+                    if(lastKnownLocation!=null){
+                        listLiveData = tweetsViewModel!!.startStreaming(
+                            getApplicationContext(),
+                            lastKnownLocation!!,
+                            searchTerm,
+                            radius
+                        )
+                    }
                 }
                 return false
             }
@@ -203,12 +207,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                     // permission was granted, yay!
                     lastKnownLocation = locationManager!!.getLastKnownLocation(locationProvider)
                     tweetsViewModel = ViewModelProviders.of(this).get(TweetsViewModel::class.java)
-                    listLiveData = tweetsViewModel?.startStreaming(
-                        getApplicationContext(),
-                        lastKnownLocation!!,
-                        searchTerm,
-                        radius
-                    )
+                    if(lastKnownLocation!=null){
+                        listLiveData = tweetsViewModel?.startStreaming(
+                            getApplicationContext(),
+                            lastKnownLocation!!,
+                            searchTerm,
+                            radius
+                        )
+                    }
                     startObserving()
                     updateLocationUI()
                 } else {
@@ -285,7 +291,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     fun changeRadius(target: View?) {
-        val builder = AlertDialog.Builder(this, R.style.MyDialogTheme)
+        val builder = AlertDialog.Builder(this)
         builder.setTitle(getResources().getString(R.string.radius_in_km))
         // I'm using fragment here so I'm using getView() to provide ViewGroup
 // but you can provide here any other instance of ViewGroup from your Fragment / Activity
@@ -313,12 +319,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                     radius = input.text.trim().toString().toLong().toDouble()
                     radiusTV!!.text = " $radius KM"
                     tweetsViewModel?.stopStreaming()
-                    listLiveData = tweetsViewModel?.startStreaming(
-                        getApplicationContext(),
-                        lastKnownLocation!!,
-                        searchTerm,
-                        radius
-                    )
+                    if(lastKnownLocation!=null){
+                        listLiveData = tweetsViewModel?.startStreaming(
+                            getApplicationContext(),
+                            lastKnownLocation!!,
+                            searchTerm,
+                            radius
+                        )
+                    }
                 }else{
                     Toast.makeText(this, "Please Select a radius ", Toast.LENGTH_SHORT).show()
                 }

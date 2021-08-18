@@ -10,7 +10,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="MyDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
         <item name="colorPrimary">@android:color/black</item>
     </style>
 </resources>
