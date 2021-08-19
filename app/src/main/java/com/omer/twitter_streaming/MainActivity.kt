@@ -141,55 +141,61 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     private fun startObserving() {
-        listLiveData!!.observe(this, androidx.lifecycle.Observer { tweets:List<Status> ->
-            val newTweets: MutableList<Status> =
-                ArrayList()
-            for (tweet in tweets) {
-                newTweets.add(tweet)
+        try{
+            if(listLiveData!=null){
+                listLiveData!!.observe(this, androidx.lifecycle.Observer { tweets:List<Status> ->
+                    val newTweets: MutableList<Status> =
+                        ArrayList()
+                    for (tweet in tweets) {
+                        newTweets.add(tweet)
+                    }
+                    val common: MutableList<Status> =
+                        ArrayList(oldTweets)
+                    common.retainAll(newTweets)
+                    val tweetsToAdd: MutableList<Status> =
+                        ArrayList(newTweets)
+                    tweetsToAdd.removeAll(common)
+                    val tweetsToRemove: MutableList<Status> =
+                        ArrayList(oldTweets)
+                    tweetsToRemove.removeAll(common)
+                    if (tweets.size == 0) {
+                        //clear map
+                        mMap!!.clear()
+                    } else {
+                        for (newTweet in tweetsToAdd) {
+                            oldTweets.add(newTweet)
+                            val bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(
+                                BitmapDescriptorFactory.HUE_AZURE
+                            )
+                            val tweetLocation = LatLng(
+                                newTweet.geoLocation.latitude,
+                                newTweet.geoLocation.longitude
+                            )
+                            val newlyAddedMarker =
+                                mMap!!.addMarker(
+                                    MarkerOptions().position(tweetLocation)
+                                        .icon(bitmapDescriptor)
+                                        .title("Tweet my @" + newTweet.user.screenName)
+                                )
+                            newlyAddedMarker.tag = newTweet.id
+                            markersWeakHashMap[newTweet.id] = newlyAddedMarker
+                            tweetsWeakHashMap[newTweet.id] = newTweet
+                            newlyAddedMarker.showInfoWindow()
+                        }
+                        for (tweetToRemove in tweetsToRemove) {
+                            val markerToRemove =
+                                markersWeakHashMap[tweetToRemove.id]
+                            markerToRemove!!.remove()
+                            markersWeakHashMap.remove(tweetToRemove.id)
+                            tweetsWeakHashMap.remove(tweetToRemove.id)
+                            oldTweets.remove(tweetToRemove)
+                        }
+                    }
+                })
             }
-            val common: MutableList<Status> =
-                ArrayList(oldTweets)
-            common.retainAll(newTweets)
-            val tweetsToAdd: MutableList<Status> =
-                ArrayList(newTweets)
-            tweetsToAdd.removeAll(common)
-            val tweetsToRemove: MutableList<Status> =
-                ArrayList(oldTweets)
-            tweetsToRemove.removeAll(common)
-            if (tweets.size == 0) {
-                //clear map
-                mMap!!.clear()
-            } else {
-                for (newTweet in tweetsToAdd) {
-                    oldTweets.add(newTweet)
-                    val bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(
-                        BitmapDescriptorFactory.HUE_AZURE
-                    )
-                    val tweetLocation = LatLng(
-                        newTweet.geoLocation.latitude,
-                        newTweet.geoLocation.longitude
-                    )
-                    val newlyAddedMarker =
-                        mMap!!.addMarker(
-                            MarkerOptions().position(tweetLocation)
-                                .icon(bitmapDescriptor)
-                                .title("Tweet my @" + newTweet.user.screenName)
-                        )
-                    newlyAddedMarker.tag = newTweet.id
-                    markersWeakHashMap[newTweet.id] = newlyAddedMarker
-                    tweetsWeakHashMap[newTweet.id] = newTweet
-                    newlyAddedMarker.showInfoWindow()
-                }
-                for (tweetToRemove in tweetsToRemove) {
-                    val markerToRemove =
-                        markersWeakHashMap[tweetToRemove.id]
-                    markerToRemove!!.remove()
-                    markersWeakHashMap.remove(tweetToRemove.id)
-                    tweetsWeakHashMap.remove(tweetToRemove.id)
-                    oldTweets.remove(tweetToRemove)
-                }
-            }
-        })
+        }catch (e:Exception){
+
+        }
     }
 
     @SuppressLint("MissingPermission")
