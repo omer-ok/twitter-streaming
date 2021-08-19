@@ -11,6 +11,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -119,14 +120,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
-                    tweetsViewModel?.stopStreaming()
-                    if(lastKnownLocation!=null){
-                        listLiveData = tweetsViewModel!!.startStreaming(
-                            getApplicationContext(),
-                            lastKnownLocation!!,
-                            searchTerm,
-                            radius
-                        )
+                    try{
+                        tweetsViewModel?.stopStreaming()
+                        if(lastKnownLocation!=null){
+                            listLiveData = tweetsViewModel!!.startStreaming(
+                                getApplicationContext(),
+                                lastKnownLocation!!,
+                                searchTerm,
+                                radius
+                            )
+                        }
+                    }catch (e:Exception){
+                        Log.e("Exception",e.toString())
                     }
                 }
                 return false
@@ -322,16 +327,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 if(input.text.trim().toString()!=""){
-                    radius = input.text.trim().toString().toLong().toDouble()
-                    radiusTV!!.text = " $radius KM"
-                    tweetsViewModel?.stopStreaming()
-                    if(lastKnownLocation!=null){
-                        listLiveData = tweetsViewModel?.startStreaming(
-                            getApplicationContext(),
-                            lastKnownLocation!!,
-                            searchTerm,
-                            radius
-                        )
+                    try{
+                        radius = input.text.trim().toString().toLong().toDouble()
+                        radiusTV!!.text = " $radius KM"
+                        tweetsViewModel?.stopStreaming()
+                        if(lastKnownLocation!=null){
+                            listLiveData = tweetsViewModel?.startStreaming(
+                                getApplicationContext(),
+                                lastKnownLocation!!,
+                                searchTerm,
+                                radius
+                            )
+                        }
+                    }catch (e:Exception){
+                        Log.e("Exception",e.toString())
                     }
                 }else{
                     Toast.makeText(this, "Please Select a radius ", Toast.LENGTH_SHORT).show()

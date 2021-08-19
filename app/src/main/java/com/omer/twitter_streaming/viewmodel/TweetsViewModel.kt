@@ -83,7 +83,13 @@ class TweetsViewModel : ViewModel() {
     }
 
     fun stopStreaming(): LiveData<List<Status>?>? {
-        tweets!!.postValue(ArrayList())
+        try {
+            if(tweets!=null){
+                tweets!!.postValue(ArrayList())
+            }
+        }catch (e:java.lang.Exception){
+
+        }
         return tweets
     }
 
